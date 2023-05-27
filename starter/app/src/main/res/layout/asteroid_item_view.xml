@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:textSize="24sp"
-  android:paddingStart="16dp"
-  android:paddingEnd="16dp"
-  android:textColor="@android:color/white"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content" />
+  android:layout_height="wrap_content"
+  android:padding="12dp"
+  tools:background="@color/colorPrimaryDark">
+
+  <ImageView
+    android:id="@+id/potentially_hazardous"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:contentDescription="TODO"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:srcCompat="@drawable/ic_status_potentially_hazardous" />
+
+  <TextView
+    android:id="@+id/close_approach_date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:textColor="@android:color/white"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/codename"
+    tools:text="2020-02-08" />
+
+  <TextView
+    android:id="@+id/codename"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:textColor="@android:color/white"
+    android:textSize="18sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="68347 (2001 KB67)" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

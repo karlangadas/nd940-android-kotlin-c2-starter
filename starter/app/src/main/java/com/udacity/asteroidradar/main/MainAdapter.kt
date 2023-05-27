@@ -26,18 +26,29 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = AsteroidItemViewBinding.inflate(layoutInflater, parent, false)
-        return ViewHolder(binding)
+        return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.binding.asteroid = item
+        holder.bind(item)
     }
 
     override fun getItemCount() = data.size
 
-    class ViewHolder(val binding: AsteroidItemViewBinding): RecyclerView.ViewHolder(binding.root){
+    class ViewHolder private constructor(private val binding: AsteroidItemViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Asteroid) {
+            binding.asteroid = item
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = AsteroidItemViewBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
+            }
+        }
     }
 }

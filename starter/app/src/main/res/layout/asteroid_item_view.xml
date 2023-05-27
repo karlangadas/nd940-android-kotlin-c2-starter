@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:padding="12dp"
-  tools:background="@color/colorPrimaryDark">
+  xmlns:tools="http://schemas.android.com/tools">
 
-  <ImageView
-    android:id="@+id/potentially_hazardous"
-    android:layout_width="wrap_content"
+  <data>
+    <variable
+      name="asteroid"
+      type="com.udacity.asteroidradar.Asteroid" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:contentDescription="TODO"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:srcCompat="@drawable/ic_status_potentially_hazardous" />
+    android:padding="12dp"
+    tools:background="@color/colorPrimaryDark">
 
-  <TextView
-    android:id="@+id/close_approach_date"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="4dp"
-    android:textColor="@android:color/white"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/codename"
-    tools:text="2020-02-08" />
+    <ImageView
+      android:id="@+id/potentially_hazardous"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:contentDescription="TODO"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:statusIcon="@{asteroid.potentiallyHazardous}"
+      tools:srcCompat="@drawable/ic_status_potentially_hazardous" />
 
-  <TextView
-    android:id="@+id/codename"
-    android:textStyle="bold"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="4dp"
-    android:textColor="@android:color/white"
-    android:textSize="18sp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:text="68347 (2001 KB67)" />
+    <TextView
+      android:id="@+id/close_approach_date"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="4dp"
+      android:textColor="@android:color/white"
+      android:text="@{asteroid.closeApproachDate}"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/codename"
+      tools:text="2020-02-08" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+      android:id="@+id/codename"
+      android:textStyle="bold"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="4dp"
+      android:textColor="@android:color/white"
+      android:textSize="18sp"
+      android:text="@{asteroid.codename}"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="68347 (2001 KB67)" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -10,6 +10,7 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import java.io.IOException
 
 // extracted from: https://stackoverflow.com/questions/71081146/retrofit-get-query-with-api-key
@@ -40,7 +41,7 @@ private val retrofit = Retrofit.Builder()
 
 interface AsteroidsApiService {
     @GET("neo/rest/v1/feed")
-    suspend fun getPropertiesAsync(): String
+    suspend fun getPropertiesAsync(@Query("start_date") startDate: String, @Query("end_date") endDate: String): String
 }
 
 object AsteroidsApi {

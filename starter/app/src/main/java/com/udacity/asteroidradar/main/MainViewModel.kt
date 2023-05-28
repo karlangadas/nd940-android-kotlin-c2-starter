@@ -1,24 +1,36 @@
 package com.udacity.asteroidradar.main
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.repository.AsteroidsRepository
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    private val _status = MutableLiveData<String>()
-    val status: LiveData<String>
-        get() = _status
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _property = MutableLiveData<ArrayList<Asteroid>>()
-    val property: LiveData<ArrayList<Asteroid>>
-        get() = _property
+    private val database = getDatabase(application)
+    private val asteroidsRepository = AsteroidsRepository(database)
 
     init {
-        getAsteroidsProperties()
+        viewModelScope.launch {
+            asteroidsRepository.refreshAsteroids()
+        }
     }
 
-    private fun getAsteroidsProperties() {
-        // TODO
+    val asteroids = asteroidsRepository.asteroids
+
+    class Factory(val app: Application) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return MainViewModel(app) as T
+            }
+            throw IllegalArgumentException("Unable to construct viewmodel")
+        }
     }
 }

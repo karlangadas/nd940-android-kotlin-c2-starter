@@ -1,20 +1,15 @@
 package com.udacity.asteroidradar.main
 
-import android.annotation.SuppressLint
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.AsteroidItemViewBinding
 
-class MainAdapter : ListAdapter<Asteroid, MainAdapter.ViewHolder>(AsteroidsDiffCallback()) {
+class MainAdapter(private val callback: AsteroidClick) :
+    ListAdapter<Asteroid, MainAdapter.ViewHolder>(AsteroidsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -22,13 +17,14 @@ class MainAdapter : ListAdapter<Asteroid, MainAdapter.ViewHolder>(AsteroidsDiffC
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, callback)
     }
 
     class ViewHolder private constructor(private val binding: AsteroidItemViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Asteroid) {
+        fun bind(item: Asteroid, callback: AsteroidClick) {
             binding.asteroid = item
+            binding.asteroidCallback = callback
             binding.executePendingBindings()
         }
 
@@ -49,5 +45,9 @@ class MainAdapter : ListAdapter<Asteroid, MainAdapter.ViewHolder>(AsteroidsDiffC
         override fun areContentsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return oldItem == newItem
         }
+    }
+
+    class AsteroidClick(val block: (Asteroid) -> Unit) {
+        fun onClick(asteroid: Asteroid) = block(asteroid)
     }
 }

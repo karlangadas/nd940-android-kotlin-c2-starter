@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -21,13 +22,17 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
-        val adapter = MainAdapter()
+        val adapter = MainAdapter(MainAdapter.AsteroidClick {
+            findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+        }
+
+        )
         binding.asteroidRecycler.adapter = adapter
         viewModel.asteroids.observe(viewLifecycleOwner) {
             it?.let {

@@ -1,11 +1,14 @@
 package com.udacity.asteroidradar.main
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -26,15 +29,11 @@ class MainFragment : Fragment() {
 
         val adapter = MainAdapter()
         binding.asteroidRecycler.adapter = adapter
-        val data = listOf(
-            Asteroid(1, "codename1", "2020-02-08", 0.0, 0.0, 0.0, 0.0, false),
-            Asteroid(2, "codename2", "2020-02-01", 0.0, 0.0, 0.0, 0.0, true),
-            Asteroid(3, "codename3", "2020-02-07", 0.0, 0.0, 0.0, 0.0, false),
-            Asteroid(4, "codename4", "2020-02-03", 0.0, 0.0, 0.0, 0.0, true),
-            Asteroid(5, "codename5", "2020-02-04", 0.0, 0.0, 0.0, 0.0, true),
-            Asteroid(6, "codename6", "2020-02-05", 0.0, 0.0, 0.0, 0.0, false),
-        )
-        adapter.submitList(data)
+        viewModel.property.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.submitList(it)
+            }
+        }
 
         setHasOptionsMenu(true)
 

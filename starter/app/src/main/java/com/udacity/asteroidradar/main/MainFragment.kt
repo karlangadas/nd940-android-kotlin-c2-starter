@@ -15,6 +15,7 @@ import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
+    private lateinit var adapter: MainAdapter
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
@@ -28,7 +29,7 @@ class MainFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        val adapter = MainAdapter(MainAdapter.AsteroidClick {
+        adapter = MainAdapter(MainAdapter.AsteroidClick {
             findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
         }
 
@@ -51,6 +52,13 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val asteroidsToDisplay = when (item.itemId) {
+            R.id.show_today_asteroids -> viewModel.getTodayAsteroid()
+            R.id.show_week_asteroids -> viewModel.getWeekAsteroid()
+            R.id.show_saved_asteroids -> viewModel.asteroids.value
+            else -> null
+        }
+        adapter.submitList(asteroidsToDisplay)
         return true
     }
 }

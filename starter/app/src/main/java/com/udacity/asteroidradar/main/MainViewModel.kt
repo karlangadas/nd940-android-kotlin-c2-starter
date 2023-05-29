@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,9 +24,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            asteroidsRepository.refreshAsteroids()
-            _pictureOfTheDay.value =
-                JSONObject(NasaApi.retrofitService.getPictureOfTheDaysAsync()).getString("hdurl")
+            try {
+                asteroidsRepository.refreshAsteroids()
+                _pictureOfTheDay.value =
+                    JSONObject(NasaApi.retrofitService.getPictureOfTheDaysAsync()).getString("hdurl")
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Failure")
+            }
         }
     }
 

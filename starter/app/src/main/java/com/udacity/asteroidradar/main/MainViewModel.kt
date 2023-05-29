@@ -6,8 +6,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.NasaApi
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidsRepository
@@ -16,6 +20,7 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -26,8 +31,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 asteroidsRepository.refreshAsteroids()
-                _pictureOfTheDay.value =
-                    JSONObject(NasaApi.retrofitService.getPictureOfTheDaysAsync()).getString("hdurl")
+                val moshi = Moshi.Builder().build()
+                val adapter: JsonAdapter<PictureOfDay> = moshi.adapter(PictureOfDay::class.java)
+                _pictureOfTheDay.value = adapter.fromJson(NasaApi.retrofitService.getPictureOfTheDaysAsync())
             } catch (e: Exception) {
                 Log.e("MainViewModel", "Failure")
             }
@@ -35,8 +41,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val asteroids = asteroidsRepository.asteroids
-    private val _pictureOfTheDay = MutableLiveData<String>()
-    val pictureOfTheDay: LiveData<String>
+    private val _pictureOfTheDay = MutableLiveData<PictureOfDay>()
+    val pictureOfTheDay: LiveData<PictureOfDay>
         get() = _pictureOfTheDay
 
     fun getTodayAsteroid(): List<Asteroid>? {

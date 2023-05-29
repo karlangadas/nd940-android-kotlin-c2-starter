@@ -1,6 +1,5 @@
 package com.udacity.asteroidradar
 
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
@@ -12,8 +11,12 @@ import com.bumptech.glide.request.RequestOptions
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
+        imageView.contentDescription =
+            imageView.context.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
+        imageView.contentDescription =
+            imageView.context.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -50,9 +53,11 @@ fun bindImage(imageView: ImageView, imgUrl: String?) {
         val imgUri = it.toUri().buildUpon().scheme("https").build()
         Glide.with(imageView.context)
             .load(imgUri)
-            .apply(RequestOptions()
-                .placeholder(R.drawable.loading_animation)
-                .error(R.drawable.ic_broken_image))
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.loading_animation)
+                    .error(R.drawable.ic_broken_image)
+            )
             .into(imageView)
     }
 }

@@ -8,15 +8,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.NasaApi
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidsRepository
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -33,8 +32,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 asteroidsRepository.refreshAsteroids()
                 val moshi = Moshi.Builder().build()
                 val adapter: JsonAdapter<PictureOfDay> = moshi.adapter(PictureOfDay::class.java)
-                _pictureOfTheDay.value = adapter.fromJson(NasaApi.retrofitService.getPictureOfTheDaysAsync())
+                _pictureOfTheDay.value =
+                    adapter.fromJson(NasaApi.retrofitService.getPictureOfTheDaysAsync())
             } catch (e: Exception) {
+                _pictureOfTheDay.value = PictureOfDay(
+                    "",
+                    application.resources.getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet),
+                    ""
+                )
                 Log.e("MainViewModel", "Failure")
             }
         }

@@ -1,7 +1,5 @@
 package com.udacity.asteroidradar.api
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.Constants
 import okhttp3.Interceptor
@@ -39,13 +37,19 @@ private val retrofit = Retrofit.Builder()
     .client(apiKeyClient)
     .build()
 
-interface AsteroidsApiService {
+interface NasaApiService {
     @GET("neo/rest/v1/feed")
-    suspend fun getPropertiesAsync(@Query("start_date") startDate: String, @Query("end_date") endDate: String): String
+    suspend fun getPropertiesAsync(
+        @Query("start_date") startDate: String,
+        @Query("end_date") endDate: String
+    ): String
+
+    @GET("planetary/apod")
+    suspend fun getPictureOfTheDaysAsync(): String
 }
 
-object AsteroidsApi {
-    val retrofitService: AsteroidsApiService by lazy {
-        retrofit.create(AsteroidsApiService::class.java)
+object NasaApi {
+    val retrofitService: NasaApiService by lazy {
+        retrofit.create(NasaApiService::class.java)
     }
 }

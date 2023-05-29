@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.api.AsteroidsApi
+import com.udacity.asteroidradar.api.NasaApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.asDatabaseModel
@@ -28,7 +28,7 @@ class AsteroidsRepository(private val database: AsteroidsDatabase) {
             val (startDate, endDate) = getDates()
             val asteroids = parseAsteroidsJsonResult(
                 JSONObject(
-                    AsteroidsApi.retrofitService.getPropertiesAsync(
+                    NasaApi.retrofitService.getPropertiesAsync(
                         startDate,
                         endDate
                     )
